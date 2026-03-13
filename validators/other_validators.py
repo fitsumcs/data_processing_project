@@ -24,14 +24,11 @@ def validate_geo(location_value: object, parsed_req: ParsedReq, geo_mode: str = 
         return "INVALID", "Location does not match allowed Geo requirements."
 
     if geo_mode == "strict":
-        # In strict mode, if req contains multiple tokens, require at least one broad country
-        # token and one detailed token when both appear in req.
-        broad = [t for t in parsed_req.geo_allowed if len(t) > 2 and " " not in t]
-        detailed = [t for t in parsed_req.geo_allowed if " " in t or len(t) <= 2]
-        if broad and detailed:
-            has_broad = any(t in location for t in broad)
-            has_detailed = any(t in location for t in detailed)
-            if not (has_broad and has_detailed):
+        geo_raw = lower_clean(parsed_req.fields.get("geo", ""))
+        has_detailed_hint = " only" in geo_raw or "-" in geo_raw
+        if has_detailed_hint:
+            matched_count = sum(1 for t in parsed_req.geo_allowed if t and t in location)
+            if matched_count < 2:
                 return "INVALID", "Strict Geo mode requires both country and city/region match."
 
     return "VALID", "Location matches Geo requirements."

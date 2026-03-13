@@ -100,6 +100,29 @@ Strict Geo mode:
 python3 main.py --input data/input/DataCheck_DemoCode.xlsx --output-dir data/output --geo-mode strict
 ```
 
+Run unit tests:
+
+```bash
+pytest -q
+```
+
+## Test Evidence
+
+- Command executed:
+
+```bash
+python3 -m pytest -q
+```
+
+- Result: `23 passed`
+- Coverage focus:
+  - Req parsing (`Geo`, `keywords`, `job_level`)
+  - `N1: NWC` status mapping
+  - Prooflink validation paths
+  - Geo validation (`normal` and `strict`)
+  - Title validator edge behavior
+  - Dispatcher routing smoke checks
+
 ## Output Files
 
 Generated in `data/output`:
@@ -118,7 +141,7 @@ Both files contain all original columns plus:
 ## Quality Notes (Suggestions Only)
 
 - `N/A: Title/PL Summary` can produce borderline false `INVALID` rows because requirement text is noisy and semi-structured.
-- A future improvement pass can re duce this by adding stronger keyword normalization, synonym mapping, and phrase-level title matching.
+- A future improvement pass can reduce this by adding stronger keyword normalization, synonym mapping, and phrase-level title matching.
 - `N/A: Country/GEO` may mark valid metro-area strings as `INVALID` when only country names are listed in requirements.
 - A future improvement can add city/metro-to-country reference mapping and alias normalization (for example abbreviations and local naming variants).
 - These are optimization suggestions and are not required for the current baseline implementation.

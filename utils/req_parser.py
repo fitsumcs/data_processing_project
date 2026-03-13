@@ -32,7 +32,9 @@ def _parse_geo(geo_text: str) -> tuple[List[str], List[str]]:
 
     # split on common separators while preserving short location tokens
     allowed = (
-        allowed.replace(" only", " ")
+        allowed.replace("(", " ")
+        .replace(")", " ")
+        .replace(" only", " ")
         .replace(" and ", ",")
         .replace("&", ",")
         .replace(" - ", ",")
